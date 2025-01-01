@@ -14,54 +14,81 @@
 
   <body>
     <div class="container mt-5">
-      <h1 class="mb-4 text-center">Blog List</h1>
-  
-      <div class="container mt-5 mb-4" style="max-width: 450px; margin: auto">
-        <form class="d-flex gap-4 flex-column align-items-center" action="{% url 'combined_blog_search' %}" method="get">
+      <div>
+        <div class="d-flex flex-end justify-content-end gap-4 align-items-center">
+          <p class=" font-bold">hiii {{request.user}}</p>
+          <p>
+            <a href="{% url 'logout' %}" class="btn btn-link text-underline underline">Logout</a>
+            {% comment %} <a><button  href="{% url 'logout' %}" class="btn btn-link text-underline underline">Logout</button>s</a> {% endcomment %}
+          </p>
+        </div>
+      </div>
+      
+
+      <div class="d-flex justify-content-between align-items-center">
+        <h1 class="mb-4 text-center">All Blogs</h1>   
+
+
+        <form class="d-flex gap-4 flex-row align-items-center " action="{% url 'combined_blog_search' %}" method="get">
+          <div class="mb-3 d-flex gap-4">
+            <label for="search-type" class="form-label mb-0">Search By:</label>
+            <select name="type" id="search-type" class="form-select rounded-pill mx-3">
+              <option value="tag"> #tag </option>
+              <option value="rank">Text </option>
+            </select>
+          </div>
           <input
             class="form-control me-2 rounded-pill mb-3"
             type="search"
             name="q"
-            placeholder="Search"
+            placeholder="Search...."
             aria-label="Search"
+            style="width:250px;"
           />
-          <div class="mb-3">
-            <label for="search-type" class="form-label">Search Type:</label>
-            <select name="type" id="search-type" class="form-select rounded-pill">
-              <option value="tag">Tag Search</option>
-              <option value="rank">Text Search</option>
-              {% comment %} <option value="similar">Similarity Search</option> {% endcomment %}
-            </select>
-          </div>
-          <button class="btn btn-primary rounded-pill ml-4" type="submit">
+          
+        
+          <button class="btn btn-primary rounded-pill ml-3 mb-3" type="submit">
             Search
           </button>
         </form>
+        {% comment %} <div class=" mt-5 mb-4" style="max-width: 450px; margin: auto">
+        </div> {% endcomment %}
+    
       </div>
+
+  
     </div>
 
-      <div class="row">
-        {% for blog in page_obj %}
-        <div class="col-md-4 mb-4">
-          <div class="card h-100 card-blog">
-            <div class="card-body d-flex flex-column">
-              <h3 class="card-title">
-                <a href="{% url 'blog_detail' blog.pk %}">{{ blog.title }}</a>
-              </h3>
-              <p class="card-subtitle mb-2 text-muted">
-                Author: {{ blog.author.username }}
-              </p>
-              <small class="mb-2">Created: {{ blog.created_at }}</small>
-              <p class="card-text">{{ blog.content|truncatewords:20 }}</p>
-              <a
-                href="{% url 'blog_detail' blog.pk %}"
-                class="btn btn-primary mt-auto"
-                >Read More</a
-              >
+      <div class="container">
+        <div class="row " style="overflow:hidden;">
+          {% for blog in page_obj %}
+          <div class="col-md-4 mb-4">
+            <div class="card  card-blog">
+            
+  
+              {% if blog.blog_image %}
+              <img src="{{ blog.blog_image.url}}" class="card-img-top" alt="{{ blog.title }}" style="height:200px;object-fit:cover;">
+              {% endif %}
+  
+              <div class="card-body d-flex flex-column">
+                <h3 class="card-title">
+                  <a href="{% url 'blog_detail' blog.pk %}">{{ blog.title }}</a>
+                </h3>
+                <p class="card-subtitle mb-2 text-muted">
+                  Author: {{ blog.author.username }}
+                </p>
+                <small class="mb-2">Created: {{ blog.created_at }}</small>
+                <p class="card-text">{{ blog.content|truncatewords:20 }}</p>
+                <a
+                  href="{% url 'blog_detail' blog.pk %}"
+                  class="btn btn-primary mt-auto"
+                  >Read More</a
+                >
+              </div>
             </div>
           </div>
+          {% endfor %}
         </div>
-        {% endfor %}
       </div>
 
       <nav aria-label="Page navigation">

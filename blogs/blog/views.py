@@ -28,7 +28,7 @@ def save_user(request):
         user_save=blog_user(username = name,password = password, email = email).save()
         myuser=User.objects.create_user(name,email,password).save()
         msg="user created successfully" 
-        return render(request,'signup.html',{"msg":msg})
+        return render(request,'index.html',{"msg":msg})
     else:
         return HttpResponse("<h1>error 404 not found</h1>")
     
@@ -139,3 +139,8 @@ def share_blog(request, blog_id):
         send_mail('A Blog Shared With You', message, Blog.author.email, [recipient_email])
         return redirect('blog_detail', pk=blog_id)
     return render(request, 'share_blog.html', {'blog': blog})
+
+
+def logout_view(request):
+    logout(request)  # Logs out the user
+    return render(request,'index.html')

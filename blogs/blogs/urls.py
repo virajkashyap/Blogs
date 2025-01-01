@@ -17,7 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path 
 from blog import views
-
+from django.conf import settings
+from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.index, name="index" ),
@@ -29,9 +30,13 @@ urlpatterns = [
     path('blog/<int:blog_id>/comment/', views.add_comment, name='add_comment'),
     path('comment/<int:comment_id>/like/', views.like_comment, name='like_comment'),
     path('blog/share/<int:blog_id>/', views.share_blog, name='share_blog'),
+    path('logout/', views.logout_view, name='logout'),
     # path('blog/like/<int:blog_id>/', views.like_blog, name='like_blog'),
     path('blog/search/', views.combined_blog_search, name='combined_blog_search'),
     # path('similar-search/', views.similar_blog_search, name='similar_blog_search'),
     # path('tag_search/', views.tag_search, name='tag_search'),
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

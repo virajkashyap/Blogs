@@ -19,6 +19,7 @@ class blog_user(models.Model):
 class Blog(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()  # Use TextField for larger content
+    blog_image=models.ImageField(upload_to='blogs/', blank=True, null=True)
     author = models.ForeignKey(User, related_name='blogs', on_delete=models.CASCADE)
     tags = models.ManyToManyField('Tag', related_name='blogs')# Assuming you have a Tag model
     created_at = models.DateTimeField(auto_now_add=True)
